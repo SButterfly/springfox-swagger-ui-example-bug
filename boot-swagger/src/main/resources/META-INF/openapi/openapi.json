@@ -1,0 +1,462 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "description" : "Description",
+    "title" : "Title",
+    "version" : "LATEST"
+  },
+  "paths" : {
+    "/api/get" : {
+      "post" : {
+        "operationId" : "getBySsku",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Get_availabilities_request",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "properties" : {
+                  "keys" : {
+                    "items" : {
+                      "$ref" : "#/components/schemas/key"
+                    },
+                    "type" : "array"
+                  },
+                  "warehouseIds" : {
+                    "items" : {
+                      "example" : 172,
+                      "format" : "int64",
+                      "type" : "integer"
+                    },
+                    "type" : "array"
+                  },
+                  "date" : {
+                    "format" : "date",
+                    "type" : "string"
+                  }
+                },
+                "title" : "Get availabilities request",
+                "type" : "object"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Availabilities_response"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "Blocks"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/apiError"
+                }
+              }
+            },
+            "description" : "Bad request"
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/apiError"
+                }
+              }
+            },
+            "description" : "Internal error"
+          }
+        }
+      }
+    },
+    "/api/get-by-interval" : {
+      "post" : {
+        "operationId" : "getBySskuOnInterval",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Get_availabilities_by_interval_request",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "properties" : {
+                  "keys" : {
+                    "items" : {
+                      "$ref" : "#/components/schemas/key"
+                    },
+                    "type" : "array"
+                  },
+                  "warehouseIds" : {
+                    "items" : {
+                      "format" : "int64",
+                      "type" : "integer"
+                    },
+                    "type" : "array"
+                  },
+                  "dateFrom" : {
+                    "format" : "date",
+                    "type" : "string"
+                  },
+                  "dateTo" : {
+                    "format" : "date",
+                    "type" : "string"
+                  }
+                },
+                "title" : "Get availabilities by interval request",
+                "type" : "object"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Availabilities_by_interval_response"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "Blocks"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/apiError"
+                }
+              }
+            },
+            "description" : "Bad request"
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/apiError"
+                }
+              }
+            },
+            "description" : "Internal error"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "requestBodies" : {
+      "Get_availabilities_by_interval_request" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Get_availabilities_by_interval_request"
+            }
+          }
+        }
+      },
+      "Get_availabilities_request" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Get_availabilities_request"
+            }
+          }
+        }
+      }
+    },
+    "schemas" : {
+      "apiError" : {
+        "properties" : {
+          "code" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "error" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "shopSkuStatus" : {
+        "properties" : {
+          "supplierId" : {
+            "format" : "int32",
+            "nullable" : false,
+            "type" : "integer"
+          },
+          "shopSku" : {
+            "nullable" : false,
+            "type" : "string"
+          },
+          "status" : {
+            "$ref" : "#/components/schemas/sskuStatus"
+          }
+        },
+        "type" : "object"
+      },
+      "infos" : {
+        "items" : {
+          "$ref" : "#/components/schemas/blockInfo"
+        },
+        "nullable" : true,
+        "type" : "array"
+      },
+      "blockInfo" : {
+        "properties" : {
+          "message" : {
+            "$ref" : "#/components/schemas/message"
+          },
+          "reason" : {
+            "$ref" : "#/components/schemas/block_reason"
+          },
+          "missingCargoTypes" : {
+            "items" : {
+              "format" : "int64",
+              "type" : "integer"
+            },
+            "nullable" : true,
+            "type" : "array"
+          }
+        },
+        "title" : "Block info"
+      },
+      "key" : {
+        "properties" : {
+          "supplierId" : {
+            "example" : 481979,
+            "format" : "int32",
+            "nullable" : false,
+            "type" : "integer"
+          },
+          "shopSku" : {
+            "description" : "shopSku",
+            "example" : "00-00001779",
+            "nullable" : false,
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "startBusinessProcessRequest" : {
+        "properties" : {
+          "keys" : {
+            "items" : {
+              "$ref" : "#/components/schemas/key"
+            },
+            "type" : "array"
+          },
+          "businessProcess" : {
+            "$ref" : "#/components/schemas/businessProcess"
+          },
+          "fileIds" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "comment" : {
+            "description" : "description in title",
+            "type" : "string"
+          },
+          "author" : {
+            "description" : "author (user from staff) of request",
+            "nullable" : false,
+            "type" : "string"
+          }
+        }
+      },
+      "ticketInfo" : {
+        "properties" : {
+          "ticketName" : {
+            "nullable" : false,
+            "type" : "string"
+          }
+        }
+      },
+      "startAndFinishForSpecialOrderRequest" : {
+        "properties" : {
+          "keys" : {
+            "items" : {
+              "$ref" : "#/components/schemas/key"
+            },
+            "type" : "array"
+          },
+          "author" : {
+            "nullable" : false,
+            "type" : "string"
+          }
+        }
+      },
+      "sskuStatus" : {
+        "description" : "shopSku status",
+        "enum" : [ "A1", "A2" ],
+        "nullable" : false,
+        "type" : "string"
+      },
+      "message" : {
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "text" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "businessProcess" : {
+        "description" : "business process",
+        "enum" : [ "A1" ],
+        "nullable" : false,
+        "type" : "string"
+      },
+      "Get_availabilities_request" : {
+        "properties" : {
+          "keys" : {
+            "items" : {
+              "$ref" : "#/components/schemas/key"
+            },
+            "type" : "array"
+          },
+          "warehouseIds" : {
+            "items" : {
+              "example" : 172,
+              "format" : "int64",
+              "type" : "integer"
+            },
+            "type" : "array"
+          },
+          "date" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        },
+        "title" : "Get availabilities request",
+        "type" : "object"
+      },
+      "Availability_info" : {
+        "properties" : {
+          "warehouseId" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "allowInbound" : {
+            "type" : "boolean"
+          },
+          "infos" : {
+            "$ref" : "#/components/schemas/infos"
+          }
+        },
+        "title" : "Availability info",
+        "type" : "object"
+      },
+      "Availabilities_response" : {
+        "properties" : {
+          "key" : {
+            "$ref" : "#/components/schemas/key"
+          },
+          "availabilities" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Availability_info"
+            },
+            "type" : "array"
+          }
+        },
+        "title" : "Availabilities response",
+        "type" : "object"
+      },
+      "Get_availabilities_by_interval_request" : {
+        "properties" : {
+          "keys" : {
+            "items" : {
+              "$ref" : "#/components/schemas/key"
+            },
+            "type" : "array"
+          },
+          "warehouseIds" : {
+            "items" : {
+              "format" : "int64",
+              "type" : "integer"
+            },
+            "type" : "array"
+          },
+          "dateFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "dateTo" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "Availability_by_interval_info" : {
+        "properties" : {
+          "warehouseId" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "allowInbound" : {
+            "type" : "boolean"
+          },
+          "dateFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "dateTo" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "infos" : {
+            "$ref" : "#/components/schemas/infos"
+          }
+        },
+        "type" : "object"
+      },
+      "Availabilities_by_interval_response" : {
+        "properties" : {
+          "key" : {
+            "$ref" : "#/components/schemas/key"
+          },
+          "availabilities" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Availability_by_interval_info"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "block_reason" : {
+        "nullable" : true,
+        "properties" : {
+          "code" : {
+            "example" : "MSKU_MISSING_CARGO_TYPES",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "manual" : {
+            "type" : "boolean"
+          }
+        },
+        "title" : "block reason",
+        "type" : "object"
+      }
+    }
+  }
+}
